@@ -1,0 +1,19 @@
+const express = require('express');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const app = express();
+
+// Middleware: parse incoming JSON requests
+app.use(express.json());
+
+// Health check route
+app.get('/', (req, res) => {
+  res.json({message: 'E-Commerce API is running' });
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
