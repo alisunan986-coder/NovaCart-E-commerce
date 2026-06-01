@@ -1,17 +1,27 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
 
 dotenv.config();
 
+connectDB();
+
 const app = express();
 
-// Middleware: parse incoming JSON requests
 app.use(express.json());
 
-// Health check route
+// Routes
+app.use('/api/auth', authRoutes);
+
+// Health check
 app.get('/', (req, res) => {
-  res.json({message: 'E-Commerce API is running' });
+  res.json({ message: 'E-Commerce API is running' });
 });
+
+// Error handler (should be after routes)
+const errorHandler = require('./middleware/errorMiddleware');
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
